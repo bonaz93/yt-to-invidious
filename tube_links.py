@@ -7,13 +7,13 @@ Created on Sun Feb  7 11:39:18 2021
 script to convert youtube links into invidio.us links in an excel file
 """
 
-import openpyxl
 import os
+import openpyxl
 
-#%% Invidious parameters
+# %% Invidious parameters
 
-#list of public instances: https://instances.invidio.us/
-#list of url parameters: https://docs.invidious.io/List-of-URL-parameters.md
+# list of public instances: https://instances.invidio.us/
+# list of url parameters: https://docs.invidious.io/List-of-URL-parameters.md
 
 invidious_base = 'https://invidious.snopyta.org/'
 dm = 'dark_mode=true'
@@ -21,18 +21,13 @@ autoplay = 'autoplay=1'
 q = 'quality=hd720'
 volume = 'volume=0'
 
-par = [dm,autoplay,q,volume] #parameters list, add here if you want new ones
+# parameters list, add here if you want new ones
+par = [dm, autoplay, q, volume]
 
-# links = ['https://www.youtube.com/watch?v=yoyzOkB95IQ&t=14s',
-#          'https://youtube.com/watch?v=yoyzOkB95IQ&t=14s',
-#          'https://youtu.be/lbozu0DPcYI?t=42s',
-#          'https://m.youtube.com/watch?v=9iHM6X6uUH8',
-#          'https://youtu.be/lbozu0DPcYI',
-#          'https://www.youtube.com/watch?v=yoyzOkB95IQ',
-#          'https://m.youtube.com/watch?v=9iHM6X6uUH8&t=32s']
 
-#%%
+# %%
 # set directory and name of your original file, and the name of the transformed file
+# note that you need double escape after the disk name (e.g. C:\\...)
 directory = "C:\\Users\Jacopo\OneDrive - Universita degli Studi di Milano-Bicocca\Personal\Documents\Allenamento"
 name = "Workout.xlsx"
 final_name = "WorkOutInvidious.xlsx"
@@ -42,9 +37,13 @@ n_row = 80
 n_col = 17
 
 
-#%% transfor link function
+# %% transfor link function
 
 def transform_link(text):
+
+    '''Takes in a youtube link, transforms it into an invidious one
+    with the set parameters'''
+
     watch = text.split('/')[-1]
     if 'watch?' not in watch:
         watch = 'watch?v=' + text.split('/')[-1].replace("?", "&")
@@ -52,7 +51,21 @@ def transform_link(text):
     new_link = invidious_base + watch + '&' + '&'.join(par)
     return new_link
 
-#%%
+# just some examples to try out the function:
+
+# links = ['https://www.youtube.com/watch?v=yoyzOkB95IQ&t=14s',
+#          'https://youtube.com/watch?v=yoyzOkB95IQ&t=14s',
+#          'https://youtu.be/lbozu0DPcYI?t=42s',
+#          'https://m.youtube.com/watch?v=9iHM6X6uUH8',
+#          'https://youtu.be/lbozu0DPcYI',
+#          'https://www.youtube.com/watch?v=yoyzOkB95IQ',
+#          'https://m.youtube.com/watch?v=9iHM6X6uUH8&t=32s']
+
+# for link in links:
+#     print('\n' + transform_link(link))
+
+
+# %%
 
 os.chdir(directory)
 wb = openpyxl.open(name)
